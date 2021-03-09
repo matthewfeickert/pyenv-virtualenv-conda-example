@@ -32,6 +32,7 @@ RUN apt-get update -y && \
 # Create non-root user "docker"
 RUN useradd -m docker && \
    cp /root/.bashrc /home/docker/ && \
+   cp /root/.profile /home/docker/ && \
    mkdir /home/docker/data && \
    chown -R --from=root docker /home/docker
 
@@ -45,7 +46,6 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     src/configure && \
     make -C src && \
     popd && \
-    cp ~/.profile ~/.bash_profile && \
     echo '' >> ~/.bash_profile && \
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile && \
     echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile && \
@@ -53,7 +53,10 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     . ~/.bash_profile && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
     echo '' >> ~/.bash_profile && \
-    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile
+    echo 'eval "$(pyenv init -)"' >> ~/.bash_profile && \
+    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile && \
+    echo 'echo "bash_profile IS BEING SOURCED"' >> ~/.bash_profile && \
+    echo 'echo "bashrc IS BEING SOURCED"' >> ~/.bashrc
 
 RUN . ~/.bash_profile && \
     pyenv install 3.8.8 && \
@@ -71,8 +74,16 @@ RUN . ~/.bash_profile && \
     pip install --upgrade --no-cache-dir pip setuptools wheel
 
 # Need how to figure out how to properly get pyenv-virtulaenv in PATH
-RUN cp ~/.bash_profile ~/.profile && \
-    . ~/.bash_profile
+#RUN cp ~/.bash_profile ~/.profile
+USER root
+RUN apt-get update -y && \
+    apt-get install -y vim
+USER docker
+WORKDIR /home/docker/data
+
+RUN echo '' >> ~/.bashrc && \
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc && \
+    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 
 ENTRYPOINT ["/bin/bash", "-l", "-c"]
 CMD ["/bin/bash"]
