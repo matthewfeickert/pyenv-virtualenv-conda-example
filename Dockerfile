@@ -39,7 +39,6 @@ RUN useradd -m docker && \
 USER docker
 ENV HOME /home/docker
 WORKDIR /home/docker
-ENV PATH ${HOME}/.local/bin:$PATH
 
 # Install pyenv and pyenv-virtualenv
 RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
@@ -66,7 +65,7 @@ RUN . "${HOME}/.bash_profile" && \
     pyenv install 3.8.8 && \
     pyenv virtualenv 3.8.8 base && \
     pyenv activate base && \
-    pip install --upgrade --no-cache-dir pip setuptools wheel && \
+    python -m pip install --upgrade --no-cache-dir pip setuptools wheel && \
     pyenv deactivate && \
     echo "Install miniconda" && \
     pyenv install miniconda3-latest && \
@@ -75,7 +74,7 @@ RUN . "${HOME}/.bash_profile" && \
     conda config --set auto_activate_base false && \
     pyenv virtualenv miniconda3-latest miniconda3-base && \
     pyenv activate miniconda3-base && \
-    pip install --upgrade --no-cache-dir pip setuptools wheel
+    python -m pip install --upgrade --no-cache-dir pip setuptools wheel
 
 WORKDIR /home/docker/data
 ENTRYPOINT ["/bin/bash", "-l", "-c"]
