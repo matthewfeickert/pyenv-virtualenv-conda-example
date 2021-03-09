@@ -75,11 +75,6 @@ RUN . "${HOME}/.bash_profile" && \
     pyenv activate miniconda3-base && \
     pip install --upgrade --no-cache-dir pip setuptools wheel
 
-USER root
-RUN apt-get update -y && \
-    apt-get install -y vim
-USER docker
 WORKDIR /home/docker/data
-
 ENTRYPOINT ["/bin/bash", "-l", "-c"]
 CMD ["/bin/bash"]
