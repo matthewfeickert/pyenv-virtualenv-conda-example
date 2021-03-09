@@ -53,7 +53,6 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     . ~/.bash_profile && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
     echo '' >> ~/.bash_profile && \
-    echo 'eval "$(pyenv init -)"' >> ~/.bash_profile && \
     echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile && \
     echo '' >> ~/.bashrc && \
     echo 'eval "$(pyenv init -)"' >> ~/.bashrc && \
