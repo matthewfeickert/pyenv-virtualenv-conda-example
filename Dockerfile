@@ -56,7 +56,7 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     echo '' >> ~/.bash_profile && \
     echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile && \
     echo '' >> ~/.bashrc && \
-    echo 'eval "$(pyenv init -)"' >> ~/.bashrc && \
+    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bashrc && \
     echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 
 # Need to setup shell variables in .bash_profile to use pyenv
