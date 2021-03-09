@@ -47,17 +47,13 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     src/configure && \
     make -C src && \
     popd && \
-    echo '' >> ~/.bash_profile && \
-    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile && \
-    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile && \
-    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash_profile && \
+    echo -e '\nexport PYENV_ROOT="${HOME}/.pyenv"' >> ~/.bash_profile && \
+    echo 'export PATH="${PYENV_ROOT}/bin:${PATH}"' >> ~/.bash_profile && \
     . ~/.bash_profile && \
+    eval "$(pyenv init -)" && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
-    echo '' >> ~/.bash_profile && \
-    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile && \
-    echo '' >> ~/.bashrc && \
-    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bashrc && \
-    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
+    echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.bash_profile && \
+    echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.bashrc
 
 # Need to setup shell variables in .bash_profile to use pyenv
 # Install Python 3.8, miniconda, and create virtual environments in both
