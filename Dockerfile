@@ -29,7 +29,7 @@ RUN apt-get update -y && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/*
 
-# Create user "docker"
+# Create non-root user "docker"
 RUN useradd -m docker && \
    cp /root/.bashrc /home/docker/ && \
    mkdir /home/docker/data && \
