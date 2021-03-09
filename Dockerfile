@@ -57,17 +57,16 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile && \
     echo '' >> ~/.bashrc && \
     echo 'eval "$(pyenv init -)"' >> ~/.bashrc && \
-    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc && \
-    echo 'echo "bash_profile IS BEING SOURCED"' >> ~/.bash_profile && \
-    echo 'echo "bashrc IS BEING SOURCED"' >> ~/.bashrc
+    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 
-RUN . ~/.bash_profile && \
+# Need to setup shell variables in .bash_profile to use pyenv
+RUN . "${HOME}/.bash_profile" && \
     pyenv install 3.8.8 && \
     pyenv virtualenv 3.8.8 base && \
     pyenv activate base && \
     pip install --upgrade --no-cache-dir pip setuptools wheel
 
-RUN . ~/.bash_profile && \
+RUN . "${HOME}/.bash_profile" && \
     pyenv install miniconda3-latest && \
     pyenv shell miniconda3-latest && \
     conda init && \
@@ -76,8 +75,6 @@ RUN . ~/.bash_profile && \
     pyenv activate miniconda3-base && \
     pip install --upgrade --no-cache-dir pip setuptools wheel
 
-# Need how to figure out how to properly get pyenv-virtulaenv in PATH
-#RUN cp ~/.bash_profile ~/.profile
 USER root
 RUN apt-get update -y && \
     apt-get install -y vim
