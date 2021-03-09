@@ -58,6 +58,7 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
 # Need to setup shell variables in .bash_profile to use pyenv
 # Install Python 3.8, miniconda, and create virtual environments in both
 ENV PYTHON_VERSION 3.8.8
+ENV CONDA_VERSION miniconda3-latest
 RUN . "${HOME}/.bash_profile" && \
     echo "Install Python ${PYTHON_VERSION}" && \
     pyenv install "${PYTHON_VERSION}" && \
@@ -66,11 +67,11 @@ RUN . "${HOME}/.bash_profile" && \
     python -m pip install --upgrade --no-cache-dir pip setuptools wheel && \
     pyenv deactivate && \
     echo "Install miniconda" && \
-    pyenv install miniconda3-latest && \
-    pyenv shell miniconda3-latest && \
+    pyenv install "${CONDA_VERSION}" && \
+    pyenv shell "${CONDA_VERSION}" && \
     conda init && \
     conda config --set auto_activate_base false && \
-    pyenv virtualenv miniconda3-latest miniconda3-base && \
+    pyenv virtualenv "${CONDA_VERSION}" miniconda3-base && \
     pyenv activate miniconda3-base && \
     python -m pip install --upgrade --no-cache-dir pip setuptools wheel
 
