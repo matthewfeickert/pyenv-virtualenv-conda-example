@@ -30,7 +30,8 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Create non-root user "docker"
-RUN useradd -m docker && \
+# Set shell to Bash to give tab complete
+RUN useradd --shell /bin/bash -m docker && \
    cp /root/.bashrc /home/docker/ && \
    cp /root/.profile /home/docker/ && \
    mkdir /home/docker/data && \
