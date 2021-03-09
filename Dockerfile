@@ -55,6 +55,9 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     echo '' >> ~/.bash_profile && \
     echo 'eval "$(pyenv init -)"' >> ~/.bash_profile && \
     echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bash_profile && \
+    echo '' >> ~/.bashrc && \
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc && \
+    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc && \
     echo 'echo "bash_profile IS BEING SOURCED"' >> ~/.bash_profile && \
     echo 'echo "bashrc IS BEING SOURCED"' >> ~/.bashrc
 
@@ -80,10 +83,6 @@ RUN apt-get update -y && \
     apt-get install -y vim
 USER docker
 WORKDIR /home/docker/data
-
-RUN echo '' >> ~/.bashrc && \
-    echo 'eval "$(pyenv init -)"' >> ~/.bashrc && \
-    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 
 ENTRYPOINT ["/bin/bash", "-l", "-c"]
 CMD ["/bin/bash"]
