@@ -21,10 +21,10 @@ RUN apt-get update -y && \
         libxml2-dev \
         libxmlsec1-dev \
         libffi-dev \
-        liblzma-dev && \
-    apt-get install -y \
-        git \
+        liblzma-dev \
         g++ && \
+    apt-get install -y \
+        git && \
     apt-get -y clean && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/*
