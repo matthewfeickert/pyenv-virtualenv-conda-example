@@ -28,7 +28,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=pyhf/pyhf
+          DOCKER_IMAGE=${{github.repository}}
           VERSION=latest
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
@@ -69,7 +69,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: docker/Dockerfile
+          file: Dockerfile
           tags: ${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
@@ -91,8 +91,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: docker/Dockerfile
-          tags: pyhf/pyhf:latest,ghcr.io/${{github.repository}}:latest
+          file: Dockerfile
+          tags: ${{github.repository}}:latest,ghcr.io/${{github.repository}}:latest
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
@@ -105,7 +105,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: docker/Dockerfile
+          file: Dockerfile
           tags: ${{ steps.prep.outputs.tags }}
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
