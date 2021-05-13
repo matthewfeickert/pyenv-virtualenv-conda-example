@@ -49,6 +49,7 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
     popd && \
     echo -e '\nexport PYENV_ROOT="${HOME}/.pyenv"' >> ~/.bash_profile && \
     echo 'export PATH="${PYENV_ROOT}/bin:${PATH}"' >> ~/.bash_profile && \
+    echo 'eval "$(pyenv init --path)"' >> ~/.bash_profile && \
     . ~/.bash_profile && \
     eval "$(pyenv init -)" && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
