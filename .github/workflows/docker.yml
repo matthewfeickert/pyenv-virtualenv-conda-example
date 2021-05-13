@@ -3,12 +3,12 @@ name: Docker Images
 on:
   push:
     branches:
-    - master
+    - main
     tags:
     - v*
   pull_request:
     branches:
-    - master
+    - main
   schedule:
     - cron:  '1 0 * * *'
   release:
@@ -17,7 +17,7 @@ on:
 
 jobs:
   docker:
-    name: Build, test, and publish Docker images to Docker Hub
+    name: Build, test, and publish Docker images
     runs-on: ubuntu-latest
 
     steps:
@@ -101,8 +101,8 @@ jobs:
           -c "which curl; which tar"
 
       - name: Build and publish to registry
-        # every PR will trigger a push event on master, so check the push event is actually coming from master
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'scikit-hep/pyhf'
+        # every PR will trigger a push event on main, so check the push event is actually coming from main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'matthewfeickert/pyenv-virtualenv-conda-example'
         id: docker_build_latest
         uses: docker/build-push-action@v2
         with:
@@ -116,7 +116,7 @@ jobs:
           push: true
 
       - name: Build and publish to registry with release tag
-        if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'scikit-hep/pyhf'
+        if: github.event_name == 'release' && github.event.action == 'published' && github.repository == 'matthewfeickert/pyenv-virtualenv-conda-example'
         id: docker_build_release
         uses: docker/build-push-action@v2
         with:
