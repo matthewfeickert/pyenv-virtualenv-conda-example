@@ -28,7 +28,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=${{github.repository}}
+          DOCKER_IMAGE=matthewfeickert/pyenv-virtualenv-conda
           VERSION=latest
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
