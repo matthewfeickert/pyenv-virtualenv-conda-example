@@ -92,7 +92,7 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          tags: ${{github.repository}}:latest,ghcr.io/${{github.repository}}:latest
+          tags: matthewfeickert/pyenv-virtualenv-conda:latest,ghcr.io/${{github.repository}}:latest
           labels: |
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.created=${{ steps.prep.outputs.created }}
