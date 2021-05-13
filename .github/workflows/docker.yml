@@ -17,7 +17,7 @@ on:
 
 jobs:
   docker:
-    name: Build, test, and publish Docker images
+    name: Build and publish Docker images
     runs-on: ubuntu-latest
 
     steps:
