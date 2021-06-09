@@ -42,7 +42,11 @@ ENV HOME /home/docker
 WORKDIR /home/docker
 
 # Install pyenv and pyenv-virtualenv
-RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
+ENV PYENV_VERSION=2.0.1
+RUN git clone --depth 1 https://github.com/pyenv/pyenv.git \
+        --branch "v${PYENV_VERSION}" \
+        --single-branch \
+        ~/.pyenv && \
     pushd ~/.pyenv && \
     src/configure && \
     make -C src && \
@@ -59,7 +63,7 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
 # Need to setup shell variables in .bash_profile to use pyenv
 # Install Python 3.8, miniconda, and create virtual environments in both
 # c.f. https://stackoverflow.com/a/58045893/8931942
-ENV PYTHON_VERSION 3.8.8
+ENV PYTHON_VERSION=3.8.10
 ENV CONDA_VERSION miniconda3-latest
 RUN . "${HOME}/.bash_profile" && \
     echo "Install Python ${PYTHON_VERSION}" && \
