@@ -55,7 +55,7 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git \
     sed -i '/^export.*/a export PATH="${PYENV_ROOT}/bin:${PATH}"' ~/.profile && \
     printf '\neval "$(pyenv init --path)"\n' >> ~/.profile && \
     . ~/.profile && \
-    eval "$(pyenv init -)" && \
+    eval "$(pyenv init --path)" && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
     echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.profile && \
     echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.bashrc && \
