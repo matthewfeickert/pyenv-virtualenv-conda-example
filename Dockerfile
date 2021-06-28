@@ -57,7 +57,7 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git \
     printf '\neval "$(pyenv init -)"\n' >> ~/.bashrc && \
     . ~/.profile && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
-    printf '# Place pyenv-virtualenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/plugins/pyenv-virtualenv/shims:"* ]]; then\n  eval "$(pyenv virtualenv-init -)"\nfi\n' >> ~/.profile && \
+    printf '\n# Place pyenv-virtualenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/plugins/pyenv-virtualenv/shims:"* ]]; then\n  eval "$(pyenv virtualenv-init -)"\nfi\n' >> ~/.profile && \
     printf '\n# Place pyenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/shims:"* ]]; then\n  eval "$(pyenv init --path)"\nfi\n' >> ~/.bashrc && \
     printf '# Place pyenv-virtualenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/plugins/pyenv-virtualenv/shims:"* ]]; then\n  eval "$(pyenv virtualenv-init -)"\nfi\n' >> ~/.bashrc && \
     cp ~/.profile ~/.bash_profile && \
