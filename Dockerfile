@@ -53,14 +53,20 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git \
     popd && \
     sed -i '/^# ~.*/a export PYENV_ROOT="${HOME}/.pyenv"' ~/.profile && \
     sed -i '/^export.*/a export PATH="${PYENV_ROOT}/bin:${PATH}"' ~/.profile && \
-    printf '\neval "$(pyenv init --path)"\n' >> ~/.profile && \
+    sed -i '/^export PATH.*/a \\n# Place pyenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/shims:"* ]]; then\n  eval "$(pyenv init --path)"\nfi' ~/.profile && \
+    printf '\neval "$(pyenv init -)"\n' >> ~/.profile && \
     . ~/.profile && \
-    eval "$(pyenv init --path)" && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
-    echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init --path)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.profile && \
-    echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init --path)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.bashrc && \
+    printf '# Place pyenv-virtualenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/plugins/pyenv-virtualenv/shims:"* ]]; then\n  eval "$(pyenv virtualenv-init -)"\nfi\n' >> ~/.profile && \
+    printf '\n# Place pyenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/shims:"* ]]; then\n  eval "$(pyenv init --path)"\nfi\n' >> ~/.bashrc && \
+    printf '# Place pyenv-virtualenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/plugins/pyenv-virtualenv/shims:"* ]]; then\n  eval "$(pyenv virtualenv-init -)"\nfi\n' >> ~/.bashrc && \
     cp ~/.profile ~/.bash_profile && \
     sed -i 's/.profile/.bash_profile/' ~/.bash_profile
+
+    # printf 'eval "$(pyenv virtualenv-init -)"\n' >> ~/.bashrc && \
+    # sed -i '/^export PATH.*/a eval "$(pyenv init --path)"\n' ~/.profile && \
+    # echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init --path)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.profile && \
+    # echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init --path)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.bashrc && \
 
 # Need to setup shell variables in .bash_profile to use pyenv
 # Install Python 3.8, miniconda, and create virtual environments in both
