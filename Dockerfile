@@ -42,31 +42,38 @@ ENV HOME /home/docker
 WORKDIR /home/docker
 
 # Install pyenv and pyenv-virtualenv
-RUN git clone --depth 1 https://github.com/pyenv/pyenv.git ~/.pyenv && \
+ENV PYENV_RELEASE_VERSION=2.0.1
+RUN git clone --depth 1 https://github.com/pyenv/pyenv.git \
+        --branch "v${PYENV_RELEASE_VERSION}" \
+        --single-branch \
+        ~/.pyenv && \
     pushd ~/.pyenv && \
     src/configure && \
     make -C src && \
     popd && \
-    echo -e '\nexport PYENV_ROOT="${HOME}/.pyenv"' >> ~/.bash_profile && \
-    echo 'export PATH="${PYENV_ROOT}/bin:${PATH}"' >> ~/.bash_profile && \
-    echo 'eval "$(pyenv init --path)"' >> ~/.bash_profile && \
-    . ~/.bash_profile && \
-    eval "$(pyenv init -)" && \
+    sed -i '/^# ~.*/a export PYENV_ROOT="${HOME}/.pyenv"' ~/.profile && \
+    sed -i '/^export.*/a export PATH="${PYENV_ROOT}/bin:${PATH}"' ~/.profile && \
+    sed -i '/^export PATH.*/a \\n# Place pyenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/shims:"* ]]; then\n  eval "$(pyenv init --path)"\nfi' ~/.profile && \
+    printf '\neval "$(pyenv init -)"\n' >> ~/.bashrc && \
+    . ~/.profile && \
     git clone --depth 1 https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv && \
-    echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.bash_profile && \
-    echo -e '\nif command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\n  eval "$(pyenv virtualenv-init -)"\nfi' >> ~/.bashrc
+    printf '\n# Place pyenv-virtualenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/plugins/pyenv-virtualenv/shims:"* ]]; then\n  eval "$(pyenv virtualenv-init -)"\nfi\n' >> ~/.profile && \
+    printf '\n# Place pyenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/shims:"* ]]; then\n  eval "$(pyenv init --path)"\nfi\n' >> ~/.bashrc && \
+    printf '# Place pyenv-virtualenv shims on path\nif [[ ":${PATH}:" != *":$(pyenv root)/plugins/pyenv-virtualenv/shims:"* ]]; then\n  eval "$(pyenv virtualenv-init -)"\nfi\n' >> ~/.bashrc && \
+    cp ~/.profile ~/.bash_profile && \
+    sed -i 's/.profile/.bash_profile/' ~/.bash_profile
 
 # Need to setup shell variables in .bash_profile to use pyenv
 # Install Python 3.8, miniconda, and create virtual environments in both
 # c.f. https://stackoverflow.com/a/58045893/8931942
-ENV PYTHON_VERSION 3.8.8
+ENV PYTHON_VERSION=3.8.10
 ENV CONDA_VERSION miniconda3-latest
 RUN . "${HOME}/.bash_profile" && \
     echo "Install Python ${PYTHON_VERSION}" && \
     pyenv install "${PYTHON_VERSION}" && \
     pyenv virtualenv "${PYTHON_VERSION}" base && \
     pyenv activate base && \
-    python -m pip install --upgrade --no-cache-dir pip setuptools wheel && \
+    python -m pip --no-cache-dir install --upgrade pip setuptools wheel && \
     pyenv deactivate && \
     echo "Install miniconda" && \
     pyenv install "${CONDA_VERSION}" && \
@@ -75,7 +82,7 @@ RUN . "${HOME}/.bash_profile" && \
     conda config --set auto_activate_base false && \
     pyenv virtualenv "${CONDA_VERSION}" miniconda3-base && \
     pyenv activate miniconda3-base && \
-    python -m pip install --upgrade --no-cache-dir pip setuptools wheel
+    python -m pip --no-cache-dir install --upgrade pip setuptools wheel
 
 WORKDIR /home/docker/data
 ENTRYPOINT ["/bin/bash", "-l", "-c"]
