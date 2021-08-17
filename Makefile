@@ -10,7 +10,7 @@ image:
 	--compress
 
 test:
-	docker pull debian:buster
+	docker pull debian:bullseye
 	docker build . \
 	--file Dockerfile \
 	-t matthewfeickert/pyenv-virtualenv-conda:debug-local
