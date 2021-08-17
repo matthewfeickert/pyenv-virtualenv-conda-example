@@ -42,7 +42,7 @@ ENV HOME /home/docker
 WORKDIR /home/docker
 
 # Install pyenv and pyenv-virtualenv
-ENV PYENV_RELEASE_VERSION=2.0.3
+ENV PYENV_RELEASE_VERSION=2.0.4
 RUN git clone --depth 1 https://github.com/pyenv/pyenv.git \
         --branch "v${PYENV_RELEASE_VERSION}" \
         --single-branch \
